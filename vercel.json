@@ -2,14 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/fbinfo.js",
+      "src": "index.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
-      "src": "/api/fbinfo",
-      "dest": "/api/fbinfo.js"
+      "src": "/(.*)",
+      "dest": "/index.js"
     }
   ]
 }
