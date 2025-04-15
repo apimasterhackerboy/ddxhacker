@@ -4,11 +4,11 @@ const axios = require('axios');
 module.exports = async (req, res) => {
   res.setHeader('Content-Type', 'application/json');
 
-  if (req.method === 'GET' && req.query.fburl) {
-    const fbUrl = req.query.fburl;
+  const { fburl } = req.query;
 
+  if (req.method === 'GET' && fburl) {
     try {
-      const response = await axios.get(fbUrl, {
+      const response = await axios.get(fburl, {
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
         }
@@ -19,25 +19,25 @@ module.exports = async (req, res) => {
       const title = $('meta[property="og:title"]').attr('content') || 'Profile';
 
       if (image) {
-        res.status(200).json({
+        return res.status(200).json({
           image,
           title,
           credit: 'Tofazzal Hossain'
         });
       } else {
-        res.status(404).json({
+        return res.status(404).json({
           error: 'Profile picture not found. It might be private or blocked by Facebook.',
           credit: 'Tofazzal Hossain'
         });
       }
     } catch (error) {
-      res.status(500).json({
-        error: 'Failed to fetch Facebook profile. Please ensure the link is correct.',
+      return res.status(500).json({
+        error: 'Failed to fetch Facebook profile. Make sure the link is public and valid.',
         credit: 'Tofazzal Hossain'
       });
     }
   } else {
-    res.status(400).json({
+    return res.status(400).json({
       error: 'Invalid request. Please provide fburl as GET parameter.',
       credit: 'Tofazzal Hossain'
     });
